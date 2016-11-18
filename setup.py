@@ -19,7 +19,7 @@ def pythonversion():
 
 
 def hasgpu():
-    return not os.system('which nvidia-smi')
+    return not os.system('which nvidia-smi > /dev/null')
 
 
 def platform():
