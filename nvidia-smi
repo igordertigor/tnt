@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "I am a mock nvidia-smi for testing purposes"
