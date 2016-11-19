@@ -1,6 +1,7 @@
 import sys
 import os
 from distutils.core import setup
+import subprocess
 
 
 class UnsupportedPlatformException(Exception):
@@ -8,10 +9,19 @@ class UnsupportedPlatformException(Exception):
 
 
 def install_tensorflow():
-    # are we python3 or python2
-    # do we have a cpu
-    # mac or linux
-    pass
+    python_version = pythonversion()
+    print(python_version)
+    has_gpu = hasgpu()
+    platform_name = platform()
+    install_url = build_url("0.11.0",
+                            python_version,
+                            "gpu" if has_gpu else "cpu",
+                            platform_name,
+                            )
+    subprocess.check_output(
+        "pip install -U {}".format(install_url),
+        stderr=subprocess.STDOUT,
+        shell=True)
 
 
 def pythonversion():
@@ -50,7 +60,7 @@ def build_url(tf_version, python_version, processing_unit, platform_name):
         'platform_name': platform_name,
         'processing_unit': processing_unit,
         'tf_version': tf_version,
-        'kladderadatsch': create_fuzzyness
+        'kladderadatsch': create_fuzzyness(platform_name, python_version)
     }
     return ('https://storage.googleapis.com/tensorflow/'
             '{platform_name}/{processing_unit}/'
