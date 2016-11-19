@@ -15,7 +15,7 @@ def install_tensorflow():
 
 
 def pythonversion():
-    return sys.version[:2]
+    return sys.version_info[:2]
 
 
 def hasgpu():
@@ -38,7 +38,7 @@ def create_fuzzyness(platform_name, python_version):
     if platform_name == 'mac':
         return 'py{}-none-any'.format(python_version[0])
     elif platform_name == 'linux':
-        cpstring = '{}{}'.format(*python_version)
+        cpstring = '{}{}'.format(python_version[0], python_version[1])
         if cpstring == '27':
             return 'cp27-none-linux_x86_64'
         else:
