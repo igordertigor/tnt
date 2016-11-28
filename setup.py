@@ -1,6 +1,7 @@
 import sys
 import os
 from distutils.core import setup
+import pip
 
 
 class UnsupportedPlatformException(Exception):
@@ -8,14 +9,20 @@ class UnsupportedPlatformException(Exception):
 
 
 def install_tensorflow():
-    # are we python3 or python2
-    # do we have a cpu
-    # mac or linux
-    pass
+    python_version = pythonversion()
+    print(python_version)
+    has_gpu = hasgpu()
+    platform_name = platform()
+    install_url = build_url("0.11.0",
+                            python_version,
+                            "gpu" if has_gpu else "cpu",
+                            platform_name,
+                            )
+    pip.main(['install', '-U', install_url])
 
 
 def pythonversion():
-    return sys.version[:2]
+    return sys.version_info[:2]
 
 
 def hasgpu():
@@ -34,11 +41,11 @@ def platform():
             .format(platform_name))
 
 
-def create_fuzzyness(platform_name, python_version):
+def create_wheeltags(platform_name, python_version):
     if platform_name == 'mac':
         return 'py{}-none-any'.format(python_version[0])
     elif platform_name == 'linux':
-        cpstring = '{}{}'.format(*python_version)
+        cpstring = '{}{}'.format(python_version[0], python_version[1])
         if cpstring == '27':
             return 'cp27-none-linux_x86_64'
         else:
@@ -50,11 +57,11 @@ def build_url(tf_version, python_version, processing_unit, platform_name):
         'platform_name': platform_name,
         'processing_unit': processing_unit,
         'tf_version': tf_version,
-        'kladderadatsch': create_fuzzyness
+        'wheeltags': create_wheeltags(platform_name, python_version)
     }
     return ('https://storage.googleapis.com/tensorflow/'
             '{platform_name}/{processing_unit}/'
-            'tensorflow-{tf_version}-{kladderadatsch}.whl'
+            'tensorflow-{tf_version}-{wheeltags}.whl'
             .format(**kwargs))
 
 
