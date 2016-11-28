@@ -82,3 +82,22 @@ class TestWheeltags(unittest.TestCase):
     def test_linux_35(self):
         wheeltags = setup.create_wheeltags('linux', (3, 5))
         self.assertEqual(wheeltags, 'cp35-cp35m-linux_x86_64')
+
+
+class TestBuildURL(unittest.TestCase):
+
+    @mock.patch("setup.create_wheeltags")
+    def test_build_url_assembles_correctly(self, wheeltags_mock):
+        wheeltags_mock.return_value = 'ANY_WHEELTAGS'
+        expected = ("https://storage.googleapis.com/tensorflow/"
+                    "ANY_PLATFORM_NAME/ANY_PROCESSING_UNIT/"
+                    "tensorflow-ANY_TF_VERSION-ANY_WHEELTAGS.whl")
+        result = setup.build_url(
+            "ANY_TF_VERSION",
+            "ANY_PYTHON_VERSION",
+            "ANY_PROCESSING_UNIT",
+            "ANY_PLATFORM_NAME",
+        )
+        self.assertEqual(result, expected)
+        wheeltags_mock.assert_called_once_with("ANY_PLATFORM_NAME",
+                                               "ANY_PYTHON_VERSION")
