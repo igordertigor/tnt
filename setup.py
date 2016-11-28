@@ -1,7 +1,7 @@
 import sys
 import os
 from distutils.core import setup
-import subprocess
+import pip
 
 
 class UnsupportedPlatformException(Exception):
@@ -18,10 +18,7 @@ def install_tensorflow():
                             "gpu" if has_gpu else "cpu",
                             platform_name,
                             )
-    subprocess.check_output(
-        "pip install -U {}".format(install_url),
-        stderr=subprocess.STDOUT,
-        shell=True)
+    pip.main(['install', '-U', install_url])
 
 
 def pythonversion():
