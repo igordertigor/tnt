@@ -55,3 +55,18 @@ class TestPlatform(unittest.TestCase):
     @mock.patch('sys.platform', 'windows')
     def test_unsupported_platform_exception_raised_on_windows(self):
         self.assertRaises(setup.UnsupportedPlatformException, setup.platform)
+
+
+class TestWheeltags(unittest.TestCase):
+
+    def test_mac_27(self):
+        wheeltags = setup.create_wheeltags('mac', (2, 7))
+        self.assertEqual(wheeltags, 'py2-none-any')
+
+    def test_mac_34(self):
+        wheeltags = setup.create_wheeltags('mac', (3, 4))
+        self.assertEqual(wheeltags, 'py3-none-any')
+
+    def test_mac_35(self):
+        wheeltags = setup.create_wheeltags('mac', (3, 5))
+        self.assertEqual(wheeltags, 'py3-none-any')
