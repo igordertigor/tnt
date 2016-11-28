@@ -101,3 +101,15 @@ class TestBuildURL(unittest.TestCase):
         self.assertEqual(result, expected)
         wheeltags_mock.assert_called_once_with("ANY_PLATFORM_NAME",
                                                "ANY_PYTHON_VERSION")
+
+
+class TestInstallTensorflow(unittest.TestCase):
+
+    @mock.patch("setup.pythonversion", mock.Mock())
+    @mock.patch("setup.hasgpu", mock.Mock())
+    @mock.patch("setup.platform", mock.Mock())
+    @mock.patch("setup.build_url", mock.Mock(return_value='DUMMY_URL'))
+    @mock.patch("setup.pip.main")
+    def test_install_tensorflow_calls_pip_correctly(self, mock_pip_main):
+        setup.install_tensorflow()
+        mock_pip_main.assert_called_once_with(['install', '-U', 'DUMMY_URL'])
