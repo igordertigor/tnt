@@ -41,7 +41,7 @@ def platform():
             .format(platform_name))
 
 
-def create_fuzzyness(platform_name, python_version):
+def create_wheeltags(platform_name, python_version):
     if platform_name == 'mac':
         return 'py{}-none-any'.format(python_version[0])
     elif platform_name == 'linux':
@@ -57,11 +57,11 @@ def build_url(tf_version, python_version, processing_unit, platform_name):
         'platform_name': platform_name,
         'processing_unit': processing_unit,
         'tf_version': tf_version,
-        'kladderadatsch': create_fuzzyness(platform_name, python_version)
+        'wheeltags': create_wheeltags(platform_name, python_version)
     }
     return ('https://storage.googleapis.com/tensorflow/'
             '{platform_name}/{processing_unit}/'
-            'tensorflow-{tf_version}-{kladderadatsch}.whl'
+            'tensorflow-{tf_version}-{wheeltags}.whl'
             .format(**kwargs))
 
 
