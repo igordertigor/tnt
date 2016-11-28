@@ -70,3 +70,15 @@ class TestWheeltags(unittest.TestCase):
     def test_mac_35(self):
         wheeltags = setup.create_wheeltags('mac', (3, 5))
         self.assertEqual(wheeltags, 'py3-none-any')
+
+    def test_linux_27(self):
+        wheeltags = setup.create_wheeltags('linux', (2, 7))
+        self.assertEqual(wheeltags, 'cp27-none-linux_x86_64')
+
+    def test_linux_34(self):
+        wheeltags = setup.create_wheeltags('linux', (3, 4))
+        self.assertEqual(wheeltags, 'cp34-cp34m-linux_x86_64')
+
+    def test_linux_35(self):
+        wheeltags = setup.create_wheeltags('linux', (3, 5))
+        self.assertEqual(wheeltags, 'cp35-cp35m-linux_x86_64')
